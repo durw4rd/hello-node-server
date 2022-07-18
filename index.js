@@ -1,7 +1,8 @@
 var LaunchDarkly = require('launchdarkly-node-server-sdk');
+require('dotenv').config();
 
 // Set sdkKey to your LaunchDarkly SDK key.
-const sdkKey = "";
+const sdkKey = process.env.SDK_KEY;
 
 // Set featureFlagKey to the feature flag key you want to evaluate.
 const featureFlagKey = "my-boolean-flag";
@@ -16,7 +17,12 @@ if (sdkKey == "") {
   process.exit(1);
 }
 
-const ldClient = LaunchDarkly.init(sdkKey);
+const initOptions = {
+  logger: LaunchDarkly.basicLogger({ level: 'debug' })
+};
+
+
+const ldClient = LaunchDarkly.init(sdkKey, initOptions);
 
 // Set up the user properties. This user should appear on your LaunchDarkly users dashboard
 // soon after you run the demo.
@@ -35,9 +41,9 @@ ldClient.waitForInitialization().then(function() {
     // the user properties and flag usage statistics will not appear on your dashboard. In a
     // normal long-running application, the SDK would continue running and events would be
     // delivered automatically in the background.
-    ldClient.flush(function() {
-      ldClient.close();
-    });
+    // ldClient.flush(function() {
+    //   ldClient.close();
+    // });
   });
 }).catch(function(error) {
   showMessage("SDK failed to initialize: " + error);
