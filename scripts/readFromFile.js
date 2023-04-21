@@ -6,7 +6,7 @@ require('dotenv').config();
 const sdkKey = process.env.SDK_KEY;
 
 const dataSource = FileDataSource({
-  paths: [ 'featureStore.json' ]
+  paths: [ '../utils/featureStore.json' ]
 });
 
 const options = {
