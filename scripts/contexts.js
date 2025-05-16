@@ -1,10 +1,11 @@
-const LaunchDarkly = require('launchdarkly-node-server-sdk');
-require('dotenv').config();
+const LaunchDarkly = require('@launchdarkly/node-server-sdk');
+const { faker } = require('@faker-js/faker');
 
+require('dotenv').config();
 const sdkKey = process.env.SDK_KEY;
 
 // Set featureFlagKey to the feature flag key you want to evaluate.
-const featureFlagKey = "percentage-rollout-flag";
+const featureFlagKey = "DisplayMode";
 
 function showMessage(s) {
     console.log("*** " + s);
@@ -14,8 +15,8 @@ function showMessage(s) {
 const initOptions = {
     logger: LaunchDarkly.basicLogger({ level: 'debug' }),
     application: {
-        id: 'app-gama',
-        version: '1.0.0'
+        id: 'michals-demo-app',
+        version: '1.0.1'
       }
 };
 
@@ -38,26 +39,31 @@ const context2 = {
 
 const multiContext = {
     "kind": "multi",
-    "user": {
-        "key": "abcd1235",
-        "arrayAttribute": ["vip", "boss"],
-        "platform": "web"
-    },
     "device": {
-        "key": "michalsMCbook",
-        "screensize": "big",
-        "corporateProperty": true
+      "key": "Michal's MacBook"
+    },
+    "user": {
+      "key": "mf-123",
+      "name": "Michal LD",
+      "domain": ".test.com"
+    },
+    "vnLdSession": {
+      "key": "michalsSession02"
     }
-}
+  }
 
 ldClient.waitForInitialization().then(function () {
     showMessage("SDK successfully initialized!");
 
-    ldClient.variation(featureFlagKey, context2, false, function (err, flagValue) {
-        // showMessage("The variation for feature flag '" + featureFlagKey + "' is '" + flagValue + "' for user '" + context.user.key + "'");
-        showMessage('Showing something to someone');
-    });
+    // ldClient.variation(featureFlagKey, multiContext, false, function (err, flagValue) {
+    //     // showMessage("The variation for feature flag '" + featureFlagKey + "' is '" + flagValue + "' for user '" + context.user.key + "'");
+    //     showMessage('Showing something to ' + multiContext);
+    // });
 
+    ldClient.allFlagsState(multiContext).then((flags) => console.log(flags));
+
+    ldClient.track('BetPlacement', multiContext, null, 5);
+    ldClient.track('LegsPerMulti', multiContext, null, 2);
 
     ldClient.flush(function () {
         ldClient.close();

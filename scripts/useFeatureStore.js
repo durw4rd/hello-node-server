@@ -1,5 +1,5 @@
-const LaunchDarkly = require('launchdarkly-node-server-sdk');
-const InMemoryFeatureStore = require('launchdarkly-node-server-sdk/feature_store');
+const LaunchDarkly = require('@launchdarkly/node-server-sdk');
+const InMemoryFeatureStore = require('@launchdarkly/node-server-sdk/LDFeatureStore');
 
 // Get SDK key from .env file
 require('dotenv').config();
@@ -46,7 +46,7 @@ ldClient.waitForInitialization().then(function() {
             //     console.log('Finished writing flag & segmetn settings to a file!');
             // });
 
-            featureStore.get({namespace: 'features'}, 'SportsBook', (result) => {
+            featureStore.get({namespace: 'features'}, 'DisplayMode', (result) => {
                 console.log(result);
             })
 

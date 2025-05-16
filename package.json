@@ -4,7 +4,10 @@
   "description": "Hello LaunchDarkly for Node.js",
   "main": "index.js",
   "dependencies": {
-    "dotenv": "^16.0.1",
-    "launchdarkly-node-server-sdk": ">= 7.0.1"
+    "@launchdarkly/node-server-sdk": "^9.7.2",
+    "dotenv": "^16.0.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.0.1"
   }
 }
